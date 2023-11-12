@@ -1,113 +1,109 @@
-import Image from 'next/image'
+import { PortableText } from "@portabletext/react";
+import { client } from "../sanity/lib/client";
+import Image from "next/image";
 
-export default function Home() {
+async function getPosts() {
+  const query = `*[_type == "post"]{
+      title,
+      category,
+      description,
+      "imageUrl": image.asset->url
+    }`;
+  const posts = await client.fetch(query, { next: { revalidate: 3600 }});
+  return posts;
+}
+
+export default async function Home() {
+  const posts = await getPosts();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="mt-10 pb-32">
+      <div className=" relative">
+       
+        <h1 className=" textStroke font-ephesis absolute z-10 left-1/2 -translate-x-1/2 top-4 text-9xl text-white  ">
+          Maktub.i
+        </h1>
+        <div className="bg-white w-[400px] h-[450px] z-10 p-6 absolute left-20 top-2/3 -translate-y-1/2 rounded-xl">
+          <Image
+            className="w-full rounded "
+            alt="autora"
+            unoptimized={true}
+            src={"/assets/home/autora.png"}
+            width={200}
+            height={200}
+          />
+          <h1 className="font-bold">Laura López Gutierrez</h1>
+          <p>creadora del proyecto</p>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
+        <div className="bg-white w-1/2 h-[450px] z-10 p-6 absolute right-20 top-2/3 -translate-y-1/2 rounded-xl">
+          <h1 className="font-bold mb-2">Acerca de Maktub.i</h1>
+          <p>
+            El proyecto del blog de cuentos 'Maktub.i' nació en una tarde
+            lluviosa de otoño, cuando un grupo de amigos amantes de la filosofía
+            se reunieron en una pequeña cafetería. Discutían sobre cómo las
+            antiguas enseñanzas de Platón todavía resuenan en la sociedad
+            moderna. En particular, se sintieron cautivados por la alegoría de
+            la caverna, que describe un mundo en el que las personas viven
+            encadenadas en una cueva, observando sombras en la pared y creyendo
+            que eso es toda la realidad. Inspirados por esta poderosa metáfora,
+            decidieron crear un espacio digital donde las historias pudieran
+            actuar como las 'sombras' de la caverna, reflejando aspectos de la
+            realidad de maneras inesperadas y provocadoras. <br></br> <br></br> El objetivo del blog
+            fue desafiar las percepciones y abrir las mentes a nuevas
+            realidades, al igual que el prisionero de la caverna que se libera y
+            descubre un mundo más allá de las sombras. Cada cuento en 'Sombras y
+            Luces' se convierte en una herramienta para explorar temas como la
+            libertad, la realidad y la ilusión, invitando a los lectores a
+            cuestionar y a reflexionar. Con una mezcla de autores novatos y
+            experimentados, el blog ofrece una diversidad de voces y
+            perspectivas, todas unidas por el deseo de iluminar las sombras de
+            nuestra existencia
+          </p>
+        </div>
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          className="w-full opacity-90 h-[700px] rounded border-t-2 border-black"
+          alt="bg"
+          unoptimized={true}
+          src={"/assets/home/bg3.png"}
+          width={1000}
+          height={1000}
         />
       </div>
+      <div className="mt-20 px-10">
+        <div className="flex justify-between gap-20 ">
+          <div className="w-2/3">
+            <h1 className="border-b-2 border-black py-2 mb-4 ">
+              Lo más destacado
+            </h1>
+            <div className="grid grid-cols-2 gap-10 ">
+              {posts.map((post, index) => (
+                <article key={index} className="text-center">
+                  <Image
+                    className="w-full opacity-90 h-[300px] rounded"
+                    alt={post.title}
+                    unoptimized={true}
+                    src={post.imageUrl}
+                    width={1000}
+                    height={1000}
+                  />
+                  <div className="flex flex-col gap-6 mt-4">
+                    <p className="text-yellow-700 text-sm cursive">
+                      {post.category}
+                    </p>
+                    <h1 className="font-bold">{post.title}</h1>
+                    <p className="text-gray-400 text-sm italic">hace 1 hora</p>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+                    <PortableText value={post.description} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+          <div className="w-1/3 text-center">
+            <h1 className="border-y border-gray-400 py-2">Catálogo</h1>
+          </div>
+        </div>
       </div>
     </main>
-  )
+  );
 }

@@ -12,6 +12,21 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        blueMar: "#002D62",
+        woods: "#1E4D2B",
+        gold: "#A67C00"
+      },
+      fontFamily: {
+        'dancing-script': ['Dancing Script', 'cursive'],
+        'ephesis': ['Ephesis', 'cursive'],
+        'noto': ['Noto Sans Linear B', 'sans-serif'],
+     
+      },
+      fontSize: {
+        '9xl': '9rem',   
+        '10xl': '10rem', 
+      }
     },
   },
   plugins: [],
