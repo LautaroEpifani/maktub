@@ -1,6 +1,6 @@
 import post from './post'
-import ex from './ex'
+import catalogo from './catalogo'
 
 export const schema = {
-  types: [post, ex],
+  types: [post, catalogo],
 }

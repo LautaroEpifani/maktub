@@ -26,7 +26,12 @@ module.exports = {
       fontSize: {
         '9xl': '9rem',   
         '10xl': '10rem', 
-      }
+      },
+      screens: {
+        '3xl': '1700px',
+        '4xl': '1920px', 
+        '5xl': '2560px',
+      },
     },
   },
   plugins: [],

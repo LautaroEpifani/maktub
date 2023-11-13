@@ -14,10 +14,10 @@ export default function Navbar() {
     />
   </div>
   <ul className="flex gap-20 justify-center">
-    <li>INICIO</li>
-    <li>CATÁLOGO</li>
-    <li>CONTACTO</li>
-    <li>BLOG</li>
+    <Link href={"/"}><li>INICIO</li></Link>
+    <Link href={"/catalogo"}><li>CATÁLOGO</li></Link>
+    <Link href={"/contacto"}><li>CONTACTO</li></Link>
+    <Link href={"/blog"}><li>BLOG</li></Link>
   </ul>
   <div className="flex-1"> {/* Este div actúa como un "espacio fantasma" para equilibrar el logo y centrar el ul */}</div>
 </nav>
